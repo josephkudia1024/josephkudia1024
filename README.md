@@ -1,16 +1,51 @@
-## Hi there 👋
+# 👋 Hi, I'm Joseph Kudia
 
-<!--
-**josephkudia1024/josephkudia1024** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+🎓 **Computer Engineering Student @ University of Illinois at Chicago (Class of 2027)**  
+💡 Exploring the intersection of **embedded systems, computing, and energy innovation**  
+🔧 Building projects that combine **hardware design, firmware development, and control systems**  
 
-Here are some ideas to get you started:
+---
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## 🧑‍💻 Skills & Tools
+- **Languages**: C/C++ (Proficient), Python (Proficient), Java (Beginner), Linux Shell Scripting  
+- **Embedded Systems**: ESP32, STM32, Arduino, FreeRTOS, I²C, UART, SPI  
+- **Hardware & Design**: PCB Design, Control Systems, Signal Processing, Fusion 360, AutoCAD, KiCad, Soldering  
+- **Software & Tools**: Git/GitHub, GCC, GDB, JetBrains IDEs, VS Code, Arduino IDE  
+
+---
+
+## 🚀 Projects
+
+### 🎯 Nerf Sentry Turret  
+**ESP32 + FreeRTOS + MLX90640 Thermal Sensor**  
+- Built an autonomous Nerf turret with **thermal target acquisition** at 16Hz.  
+- Implemented **PID motor control** and multithreaded processing on ESP32.  
+- Designed custom 3D-printed parts and integrated hardware with real-time firmware.  
+
+### 📊 TradingView Intra-Day Indicator  
+**Pine Script**  
+- Developed a trading indicator based on **Smart Money Concepts (SMC)**, supply-demand, and price action.  
+- Integrated real-time looping algorithms for **market analysis & prediction**.  
+
+### 💵 FinTech Adaptive Financial Advisor  
+**Python + Matplotlib + Tkinter**  
+- Created an application that generates **personalized financial reports**.  
+- Implemented data analysis algorithms and validation testing for reliable outputs.  
+
+---
+
+## 📚 Education & Involvement
+- **University of Illinois at Chicago** — B.S. Computer Engineering (Expected May 2027)  
+- Relevant Coursework: Electronics & Circuit Design, Logic Design, Programming & Software Engineering, Data Structures & Algorithms, Discrete Mathematics  
+- Extracurriculars: IEEE, ACM  
+
+---
+
+## 📫 Connect
+- 📧 Email: **josephkudia1024@gmail.com**  
+- 💼 [LinkedIn](your-linkedin-url)  
+- 💻 [GitHub](your-github-url)  
+
+---
+
+⭐ *Always building, always learning. Check out my repositories for what I’m working on!*
