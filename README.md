@@ -1,6 +1,6 @@
 # 👋 Hi, I'm Joseph Kudia
 
-🎓 **Computer Engineering Student @ University of Illinois at Chicago (Class of 2027)**  
+🎓 **Computer Engineering Student at University of Illinois at Chicago**  
 💡 Exploring the intersection of **embedded systems, computing, and energy innovation**  
 🔧 Building projects that combine **hardware design, firmware development, and control systems**  
 
@@ -9,7 +9,7 @@
 ## 🧑‍💻 Skills & Tools
 - **Languages**: C/C++ (Proficient), Python (Proficient), Java (Beginner), Linux Shell Scripting  
 - **Embedded Systems**: ESP32, STM32, Arduino, FreeRTOS, I²C, UART, SPI  
-- **Hardware & Design**: PCB Design, Control Systems, Signal Processing, Fusion 360, AutoCAD, KiCad, Soldering  
+- **Hardware & Design**: PCB Design, Control Systems, Signal Processing, Fusion 360, AutoCAD, KiCad
 - **Software & Tools**: Git/GitHub, GCC, GDB, JetBrains IDEs, VS Code, Arduino IDE  
 
 ---
@@ -18,7 +18,7 @@
 
 ### 🎯 Nerf Sentry Turret  
 **ESP32 + FreeRTOS + MLX90640 Thermal Sensor**  
-- Built an autonomous Nerf turret with **thermal target acquisition** at 16Hz.  
+- Built an autonomous Nerf turret with **thermal target acquisition**.  
 - Implemented **PID motor control** and multithreaded processing on ESP32.  
 - Designed custom 3D-printed parts and integrated hardware with real-time firmware.  
 
