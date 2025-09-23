@@ -43,8 +43,8 @@
 
 ## 📫 Connect
 - 📧 Email: **josephkudia1024@gmail.com**  
-- 💼 [LinkedIn](your-linkedin-url)  
-- 💻 [GitHub](your-github-url)  
+- 💼 [LinkedIn](https://www.linkedin.com/in/joseph-kudia/)  
+- 💻 [GitHub](https://github.com/josephkudia1024)  
 
 ---
 
