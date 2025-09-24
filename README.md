@@ -2,5 +2,5 @@
 
 ## Tech Stack
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=arduino,c,clion,cpp,eclipse,gradle,idea,py,pycharm,vscode" />
+  <img src="https://skillicons.dev/icons?i=c,cpp,java,py,clion,idea,pycharm,vscode,eclipse,gradle,arduino" />
 </p>
