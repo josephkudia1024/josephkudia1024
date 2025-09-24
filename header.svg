@@ -1,98 +1,122 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="800" height="180" viewBox="0 0 800 180" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    :root{
-      /* EDIT ME */
-      --n: 34;                    /* number of typed characters */
-      --duration: 4s;             /* typing duration */
-      --pause: 1.2s;              /* pause after typing */
-      --fontSize: 28px;           /* text size */
-      --fg: #C8F7C5;              /* main text (green) */
-      --dim: #7FD37A;             /* prompt color */
-      --bg: #0B0F10;              /* terminal background */
-      --cursor: #A0FFA0;          /* cursor color */
-      --radius: 14px;
-      --padX: 40px;
-      --padY: 28px;
-      --lineHeight: 42px;
-      --font: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-    }
+<!--
+  Editable terminal banner SVG (no JS, SMIL-only; GitHub-safe).
+  HOW TO EDIT:
+    • Change the three <tspan> contents below for your lines.
+    • To add more lines, duplicate a <g class="line"> (except the last typing line).
+    • Typing line text is the final <text> with id="typing-line".
+    • Adjust TYPED_CHARS and DURATION to match your last line length & speed.
+      - TYPED_CHARS should equal the number of visible characters (monospace).
+      - DURATION is total typing time in seconds.
+    • If your last line is longer, increase MASK_END (px) so the mask fully reveals it.
 
-    /* Layout helpers */
-    .wrap { transform: translate(var(--padX), var(--padY)); }
-    text      { font: var(--fontSize) var(--font); dominant-baseline: hanging; }
-    .prompt   { fill: var(--dim); }
-    .cmd      { fill: var(--fg); }
+  Tested sizes:
+    WIDTH=900, HEIGHT=240; FONT=14px/monospace; LINE_HEIGHT=26
+-->
+<svg width="900" height="240" viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Terminal Banner – Typing Effect</title>
+  <desc id="desc">A macOS-style terminal window with three lines of text; the last line types out.</desc>
 
-    /* Typing effect: reveal text by animating the clipping rect width in character steps */
-    .reveal { width: 0ch; height: var(--lineHeight); }
-    .typing {
-      animation:
-        typing var(--duration) steps(var(--n)) 0s forwards,
-        hold   var(--pause)    steps(1, end)  var(--duration) forwards;
-    }
-    @keyframes typing { from { width: 0ch; } to { width: calc(var(--n) * 1ch); } }
-    @keyframes hold   { from { width: calc(var(--n) * 1ch); } to { width: calc(var(--n) * 1ch); } }
-
-    /* Blinking block cursor that tracks the typing width */
-    .cursor {
-      width: 1ch; height: calc(var(--fontSize) + 6px);
-      x: 0; y: 2px; fill: var(--cursor);
-      animation:
-        move var(--duration) steps(var(--n)) 0s forwards,
-        blink .9s steps(1,end) infinite alternate;
-      animation-delay: 0s, calc(var(--duration) + var(--pause));
-    }
-    @keyframes move { from { transform: translateX(0); } to { transform: translateX(calc(var(--n) * 1ch)); } }
-    @keyframes blink { from { opacity: 1; } to { opacity: 0; } }
-
-    /* Optional subtle glow */
-    .glow { filter: url(#glow); }
-  </style>
-
-  <!-- Background terminal window -->
-  <rect x="0" y="0" width="100%" height="100%" rx="18" ry="18" fill="var(--bg)"/>
-  <!-- Title bar dots -->
-  <g transform="translate(16,16)">
-    <circle r="6" cx="0"  cy="0" fill="#ff5f56"/>
-    <circle r="6" cx="20" cy="0" fill="#ffbd2e"/>
-    <circle r="6" cx="40" cy="0" fill="#27c93f"/>
-  </g>
-
-  <!-- Glow filter -->
+  <!-- ====== THEME / LAYOUT ====== -->
   <defs>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="1.2" result="b"/>
-      <feMerge>
-        <feMergeNode in="b"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <style>
+      /* Colors & fonts */
+      .window { fill: #0b0f14; stroke: #11161d; }
+      .titlebar { fill: #131a22; }
+      .title { fill: #8aa1b1; font: 600 13px ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+      .dot-red { fill: #ff5f57; } .dot-yellow { fill: #febc2e; } .dot-green { fill: #28c840; }
+      .prompt { fill: #77c3ff; }
+      .text { fill: #cfe8ff; font: 14px ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+      .muted { fill: #86a2b5; }
+      .cursor { fill: #cfe8ff; }
+      .line { opacity: 0.98; }
 
-    <!-- ClipPath whose rect width we animate to "reveal" the typed text -->
-    <clipPath id="clip">
-      <rect class="reveal typing" x="0" y="0" rx="0" ry="0"/>
+      /* Optional subtle scanline sheen */
+      .sheen stop:first-child { stop-color:#ffffff0d; }
+      .sheen stop:last-child { stop-color:#ffffff00; }
+    </style>
+
+    <!-- Soft gradient overlay -->
+    <linearGradient id="gradSheen" x1="0" y1="0" x2="0" y2="1" class="sheen">
+      <stop offset="0%"/>
+      <stop offset="100%"/>
+    </linearGradient>
+
+    <!-- ====== TYPING MASK SETTINGS ======
+         Edit MASK_END if your typed line is longer (pixel width to reveal).
+         The width animates from 0 → MASK_END over DURATION seconds. -->
+    <clipPath id="typingMask">
+      <rect id="maskRect" x="32" y="132" width="0" height="20" rx="2" ry="2"/>
     </clipPath>
   </defs>
 
-  <!-- Content -->
-  <g class="wrap">
-    <!-- Line 1: prompt -->
-    <text class="prompt glow" y="0">
-      <tspan x="0">keith@uiuc</tspan>
-      <tspan dx="10">:</tspan>
-      <tspan dx="10">~/projects/nerf-turret</tspan>
-      <tspan dx="10" fill="#7aa2f7">$</tspan>
+  <!-- ====== WINDOW ====== -->
+  <rect x="0.5" y="0.5" width="899" height="239" rx="16" class="window"/>
+  <rect x="0.5" y="0.5" width="899" height="36" rx="16" class="titlebar"/>
+  <g transform="translate(16, 18)">
+    <circle r="6" class="dot-red"/>
+    <circle r="6" cx="18" class="dot-yellow"/>
+    <circle r="6" cx="36" class="dot-green"/>
+  </g>
+  <text x="76" y="23" class="title">keith@github — ~/README.md</text>
+  <rect x="0.5" y="0.5" width="899" height="239" rx="16" fill="url(#gradSheen)" opacity="0.07"/>
+
+  <!-- ====== CONTENT (edit these lines) ====== -->
+  <!-- Static line 1 -->
+  <g class="line" transform="translate(24, 80)">
+    <text class="text">
+      <tspan class="prompt">$ </tspan>
+      <tspan>lorem ipsum dolor sit amet, consectetur adipiscing elit</tspan>
+    </text>
+  </g>
+
+  <!-- Static line 2 -->
+  <g class="line" transform="translate(24, 106)">
+    <text class="text">
+      <tspan class="prompt">$ </tspan>
+      <tspan>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</tspan>
+    </text>
+  </g>
+
+  <!-- Typing line (last line) -->
+  <!-- IMPORTANT:
+       1) Put your final line text inside the second <tspan>.
+       2) Update the animation params below:
+            DURATION = total typing time (e.g., 4s)
+            TYPED_CHARS = character count (used for caret travel)
+            MASK_END = final pixel width of revealed text (approx)
+         If characters look clipped, increase MASK_END.
+  -->
+  <g class="line" transform="translate(24, 132)">
+    <text id="typing-line" class="text" clip-path="url(#typingMask)">
+      <tspan class="prompt">$ </tspan>
+      <tspan id="typedText">ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</tspan>
     </text>
 
-    <!-- Line 2: the typed command (EDIT the text content) -->
-    <g transform="translate(0, var(--lineHeight))">
-      <!-- The typed text sits under a clipping rectangle that grows in ch-steps -->
-      <text class="cmd glow" clip-path="url(#clip)">
-        git commit -m "Ship the PID update"
-      </text>
-      <!-- The cursor that follows the typing -->
-      <rect class="cursor" />
-    </g>
+    <!-- Blinking block cursor; its x animates in sync with the mask’s width -->
+    <rect id="cursor" class="cursor" x="32" y="116" width="10" height="18" rx="2">
+      <!-- Blink -->
+      <animate attributeName="opacity" values="1;0;1" dur="0.9s" repeatCount="indefinite"/>
+      <!-- Travel with typing (x = 32 + progress) -->
+      <!-- PARAMETERS TO EDIT -->
+      <!-- TYPED_CHARS: set equal to visible chars in the typed line (excluding the $ and space). -->
+      <!-- AVG_CHAR_W: approx width per char (monospace, ~8.0–8.6px at 14px; tweak as needed). -->
+      <animate attributeName="x"
+               dur="4s"
+               values="32; 32 + 8.4*62"
+               calcMode="linear"
+               fill="freeze"/>
+    </rect>
   </g>
+
+  <!-- ====== ANIMATION: reveal typing via mask width ====== -->
+  <!-- Edit dur and width values to match your line length/speed -->
+  <animate xlink:href="#maskRect"
+           attributeName="width"
+           dur="4s"
+           values="0; 520"
+           calcMode="linear"
+           fill="freeze"/>
+
+  <!-- Optional tiny footer hint (muted) -->
+  <text x="24" y="212" class="muted" font-size="12">Tip: edit text & animation values inside the SVG to customize</text>
 </svg>
