@@ -8,47 +8,27 @@
       --fg: #C8F7C5;
       --dim: #7FD37A;
       --bg: #0B0F10;
-      --cursor: #A0FFA0;
       --padX: 40px;
       --padY: 28px;
       --font: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 
       /* Timing */
-      --perChar: .09s; /* duration per character */
+      --perChar: .09s; /* per-character delay */
       --pause: .6s;    /* pause between lines */
     }
 
     text { font: var(--fontSize) var(--font); dominant-baseline: hanging; }
     .prompt { fill: var(--dim); }
     .cmd { fill: var(--fg); }
-    .glow { filter: url(#glow); }
 
-    /* Per-line timing (computed from inline CSS variables) */
-    .line { --t: calc(var(--n) * var(--perChar)); --stop: calc(var(--start) + var(--t)); }
-
-    /* Inside each nested <svg>, the clip rect grows from 0% to 100% of that line's viewport */
-    .reveal {
-      height: 100%;
-      width: 0%;
-      animation: typing var(--t) steps(var(--n)) var(--start) forwards;
-    }
-    @keyframes typing { from { width: 0%; } to { width: 100%; } }
-
-    /* Cursor rides the typing width then hides */
-    .cursor {
-      width: 1ch;
-      height: calc(var(--fontSize) + 6px);
-      y: 2px; fill: var(--cursor); opacity: 1;
-      animation:
-        caret var(--t) steps(var(--n)) var(--start) forwards,
-        hide 1ms linear var(--stop) forwards;
-    }
-    @keyframes caret { from { transform: translateX(0); } to { transform: translateX(100%); } }
-    @keyframes hide { to { opacity: 0; } }
+    /* Each character is hidden, then shown at its own delay */
+    .c { opacity: 0; animation: show 1ms linear forwards; }
+    @keyframes show { to { opacity: 1; } }
   </style>
 
   <!-- Terminal background -->
   <rect x="0" y="0" width="100%" height="100%" rx="18" ry="18" fill="var(--bg)"/>
+
   <!-- macOS dots -->
   <g transform="translate(16,16)">
     <circle r="6" cx="0"  cy="0" fill="#ff5f56"/>
@@ -56,61 +36,36 @@
     <circle r="6" cx="40" cy="0" fill="#27c93f"/>
   </g>
 
-  <!-- Glow filter -->
-  <defs>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="1.2" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>
-
   <!-- Static prompt -->
-  <text class="prompt glow" x="40" y="28">
+  <text class="prompt" x="40" y="28">
     <tspan x="40">keith@uiuc</tspan>
     <tspan dx="10">:</tspan>
     <tspan dx="10">~/projects/nerf-turret</tspan>
     <tspan dx="10" fill="#7aa2f7">$</tspan>
   </text>
 
-  <!-- ===== LINE 1 ===== -->
-  <!-- Nested viewport ensures clip/cursor are local to this row -->
-  <g class="line" style="--n: 29; --start: 0s;">
-    <svg x="40" y="70" width="720" height="42" viewBox="0 0 720 42">
-      <defs>
-        <clipPath id="clip1">
-          <rect class="reveal" x="0" y="0" height="42"/>
-        </clipPath>
-      </defs>
-      <text class="cmd glow" x="0" y="0" clip-path="url(#clip1)">git status && git add .</text>
-      <!-- The cursor uses 100% as the typed width of this nested viewport -->
-      <rect class="cursor" x="0" y="0"/>
-    </svg>
-  </g>
-
-  <!-- ===== LINE 2 ===== -->
-  <!-- start = prev n * perChar + pause -->
-  <g class="line" style="--n: 32; --start: calc(29 * var(--perChar) + var(--pause));">
-    <svg x="40" y="112" width="720" height="42" viewBox="0 0 720 42">
-      <defs>
-        <clipPath id="clip2">
-          <rect class="reveal" x="0" y="0" height="42"/>
-        </clipPath>
-      </defs>
-      <text class="cmd glow" x="0" y="0" clip-path="url(#clip2)">git commit -m "PID update"</text>
-      <rect class="cursor" x="0" y="0"/>
-    </svg>
-  </g>
-
-  <!-- ===== LINE 3 ===== -->
-  <g class="line" style="--n: 24; --start: calc((29 + 32) * var(--perChar) + 2 * var(--pause));">
-    <svg x="40" y="154" width="720" height="42" viewBox="0 0 720 42">
-      <defs>
-        <clipPath id="clip3">
-          <rect class="reveal" x="0" y="0" height="42"/>
-        </clipPath>
-      </defs>
-      <text class="cmd glow" x="0" y="0" clip-path="url(#clip3)">git push origin main</text>
-      <rect class="cursor" x="0" y="0"/>
-    </svg>
-  </g>
-</svg>
+  <!-- ========= LINE 1 ========= -->
+  <!-- Set the line start time with --start -->
+  <g class="line" style="--start: 0s;">
+    <text class="cmd" x="40" y="70">
+      <!-- First char sets absolute x/y, next chars use dx="1ch" to advance in a monospace font -->
+      <tspan class="c" style="animation-delay: calc(var(--start) + 0 * var(--perChar));">g</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 1 * var(--perChar));">i</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 2 * var(--perChar));">t</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 3 * var(--perChar));"> </tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 4 * var(--perChar));">s</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 5 * var(--perChar));">t</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 6 * var(--perChar));">a</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 7 * var(--perChar));">t</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 8 * var(--perChar));">u</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 9 * var(--perChar));">s</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 10 * var(--perChar));"> </tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 11 * var(--perChar));">&amp;</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 12 * var(--perChar));">&amp;</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 13 * var(--perChar));"> </tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 14 * var(--perChar));">g</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 15 * var(--perChar));">i</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 16 * var(--perChar));">t</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 17 * var(--perChar));"> </tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 18 * var(--perChar));">a</tspan>
+      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 19 * v*
