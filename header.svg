@@ -1,71 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="800" height="230" viewBox="0 0 800 230" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="180" viewBox="0 0 800 180" xmlns="http://www.w3.org/2000/svg">
   <style>
-    svg{
-      /* Look & feel */
-      --fontSize: 28px;
-      --lineHeight: 42px;
-      --fg: #C8F7C5;
-      --dim: #7FD37A;
-      --bg: #0B0F10;
+    :root{
+      /* EDIT ME */
+      --n: 34;                    /* number of typed characters */
+      --duration: 4s;             /* typing duration */
+      --pause: 1.2s;              /* pause after typing */
+      --fontSize: 28px;           /* text size */
+      --fg: #C8F7C5;              /* main text (green) */
+      --dim: #7FD37A;             /* prompt color */
+      --bg: #0B0F10;              /* terminal background */
+      --cursor: #A0FFA0;          /* cursor color */
+      --radius: 14px;
       --padX: 40px;
       --padY: 28px;
+      --lineHeight: 42px;
       --font: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-
-      /* Timing */
-      --perChar: .09s; /* per-character delay */
-      --pause: .6s;    /* pause between lines */
     }
 
-    text { font: var(--fontSize) var(--font); dominant-baseline: hanging; }
-    .prompt { fill: var(--dim); }
-    .cmd { fill: var(--fg); }
+    /* Layout helpers */
+    .wrap { transform: translate(var(--padX), var(--padY)); }
+    text      { font: var(--fontSize) var(--font); dominant-baseline: hanging; }
+    .prompt   { fill: var(--dim); }
+    .cmd      { fill: var(--fg); }
 
-    /* Each character is hidden, then shown at its own delay */
-    .c { opacity: 0; animation: show 1ms linear forwards; }
-    @keyframes show { to { opacity: 1; } }
+    /* Typing effect: reveal text by animating the clipping rect width in character steps */
+    .reveal { width: 0ch; height: var(--lineHeight); }
+    .typing {
+      animation:
+        typing var(--duration) steps(var(--n)) 0s forwards,
+        hold   var(--pause)    steps(1, end)  var(--duration) forwards;
+    }
+    @keyframes typing { from { width: 0ch; } to { width: calc(var(--n) * 1ch); } }
+    @keyframes hold   { from { width: calc(var(--n) * 1ch); } to { width: calc(var(--n) * 1ch); } }
+
+    /* Blinking block cursor that tracks the typing width */
+    .cursor {
+      width: 1ch; height: calc(var(--fontSize) + 6px);
+      x: 0; y: 2px; fill: var(--cursor);
+      animation:
+        move var(--duration) steps(var(--n)) 0s forwards,
+        blink .9s steps(1,end) infinite alternate;
+      animation-delay: 0s, calc(var(--duration) + var(--pause));
+    }
+    @keyframes move { from { transform: translateX(0); } to { transform: translateX(calc(var(--n) * 1ch)); } }
+    @keyframes blink { from { opacity: 1; } to { opacity: 0; } }
+
+    /* Optional subtle glow */
+    .glow { filter: url(#glow); }
   </style>
 
-  <!-- Terminal background -->
+  <!-- Background terminal window -->
   <rect x="0" y="0" width="100%" height="100%" rx="18" ry="18" fill="var(--bg)"/>
-
-  <!-- macOS dots -->
+  <!-- Title bar dots -->
   <g transform="translate(16,16)">
     <circle r="6" cx="0"  cy="0" fill="#ff5f56"/>
     <circle r="6" cx="20" cy="0" fill="#ffbd2e"/>
     <circle r="6" cx="40" cy="0" fill="#27c93f"/>
   </g>
 
-  <!-- Static prompt -->
-  <text class="prompt" x="40" y="28">
-    <tspan x="40">keith@uiuc</tspan>
-    <tspan dx="10">:</tspan>
-    <tspan dx="10">~/projects/nerf-turret</tspan>
-    <tspan dx="10" fill="#7aa2f7">$</tspan>
-  </text>
+  <!-- Glow filter -->
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.2" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
 
-  <!-- ========= LINE 1 ========= -->
-  <!-- Set the line start time with --start -->
-  <g class="line" style="--start: 0s;">
-    <text class="cmd" x="40" y="70">
-      <!-- First char sets absolute x/y, next chars use dx="1ch" to advance in a monospace font -->
-      <tspan class="c" style="animation-delay: calc(var(--start) + 0 * var(--perChar));">g</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 1 * var(--perChar));">i</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 2 * var(--perChar));">t</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 3 * var(--perChar));"> </tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 4 * var(--perChar));">s</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 5 * var(--perChar));">t</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 6 * var(--perChar));">a</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 7 * var(--perChar));">t</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 8 * var(--perChar));">u</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 9 * var(--perChar));">s</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 10 * var(--perChar));"> </tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 11 * var(--perChar));">&amp;</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 12 * var(--perChar));">&amp;</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 13 * var(--perChar));"> </tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 14 * var(--perChar));">g</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 15 * var(--perChar));">i</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 16 * var(--perChar));">t</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 17 * var(--perChar));"> </tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 18 * var(--perChar));">a</tspan>
-      <tspan class="c" dx="1ch" style="animation-delay: calc(var(--start) + 19 * v*
+    <!-- ClipPath whose rect width we animate to "reveal" the typed text -->
+    <clipPath id="clip">
+      <rect class="reveal typing" x="0" y="0" rx="0" ry="0"/>
+    </clipPath>
+  </defs>
+
+  <!-- Content -->
+  <g class="wrap">
+    <!-- Line 1: prompt -->
+    <text class="prompt glow" y="0">
+      <tspan x="0">keith@uiuc</tspan>
+      <tspan dx="10">:</tspan>
+      <tspan dx="10">~/projects/nerf-turret</tspan>
+      <tspan dx="10" fill="#7aa2f7">$</tspan>
+    </text>
+
+    <!-- Line 2: the typed command (EDIT the text content) -->
+    <g transform="translate(0, var(--lineHeight))">
+      <!-- The typed text sits under a clipping rectangle that grows in ch-steps -->
+      <text class="cmd glow" clip-path="url(#clip)">
+        git commit -m "Ship the PID update"
+      </text>
+      <!-- The cursor that follows the typing -->
+      <rect class="cursor" />
+    </g>
+  </g>
+</svg>
