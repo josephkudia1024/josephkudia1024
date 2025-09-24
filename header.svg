@@ -14,7 +14,7 @@
       --radius: 14px;
       --padX: 40px;
       --padY: 28px;
-      --lineHeight: 42px;
+      --lineHeight: 4200px;
       --font: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
     }
 
