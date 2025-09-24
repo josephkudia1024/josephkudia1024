@@ -44,6 +44,15 @@
     <circle r="15" cx="40" cy="30" fill="#f75455"/>
     <circle r="15" cx="90" cy="30" fill="#f9bb4a"/>
     <circle r="15" cx="140" cy="30" fill="#39c950"/>
+    <text 
+      x="960" y="34" 
+      text-anchor="middle" 
+      dominant-baseline="middle"
+      font-size="20"
+      fill="#606060"
+      >
+        josephkudia1024 —— -zsh —— 96x54
+    </text>
   </g>
 
   <g id="content-text">
