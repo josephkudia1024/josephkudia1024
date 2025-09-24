@@ -1,3 +1,108 @@
-<p align="center">
-  <img src="header.svg" width="1920" height="1080">
-</p>
+<svg width="1920" height="1080" viewBox="0 0 1920 1080">
+  <style>
+    text {
+      font-family: "Courier New", sans-serif;
+      font-size: 40px;
+      font-weight: bold;
+    }
+  </style>
+  
+  <defs>
+    
+    <pattern id="scanlines" patternUnits="userSpaceOnUse" width="100%" height="10">
+      <!-- dark line -->
+      <rect x="0" y="0" width="100%" height="5" fill="black" />
+      <!-- optional subtle tint line just under (comment out if not wanted) -->
+      <rect x="0" y="1" width="100%" height="1" fill="black" opacity="0.25"/>
+      <!-- 1px gap starts at y=1.5 → next pattern row starts at y=3 -->
+    </pattern>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+      <feGaussianBlur stdDeviation="1"/>
+    </filter>
+
+    <filter id="soften">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+      
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="50%" stop-color="black" stop-opacity="0"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.25"/>
+    </radialGradient>
+    
+  </defs>
+
+  <g id="terminal">
+    <rect x="0" y="0" width="100%" height="100%" rx="25" ry="25" fill="#202020"/>
+    <rect x="0" y="0" width="100%" height="85" rx="25" ry="25" fill="#ededed"/>
+    <rect x="0" y="60" width="100%" height="30" rx="0" ry="0" fill="#202020"/>
+    <circle r="15" cx="40" cy="30" fill="#f75455"/>
+    <circle r="15" cx="90" cy="30" fill="#f9bb4a"/>
+    <circle r="15" cx="140" cy="30" fill="#39c950"/>
+    <text 
+      x="960" y="34" 
+      text-anchor="middle" 
+      dominant-baseline="middle"
+      font-size="20"
+      fill="#606060"
+      >
+        josephkudia1024 —— -zsh —— 96x54
+    </text>
+  </g>
+
+  <g id="content-text">
+    <text x="20" y="100" fill="#00ff00" filter="url(#glow)">
+      joseph@uic ~ % cd /josephkudia1024/
+    </text>
+    <text x="20" y="150" fill="#00ff00" filter="url(#glow)">
+      joseph@uic josephkudia1024 % touch README.md
+    </text>
+    <text x="20" y="200" fill="#00ff00" filter="url(#glow)">
+      joseph@uic josephkudia1024 % cat README.md
+    </text>
+    <text x="40" y="300" fill="#00ff00" filter="url(#glow)">
+      Hi! My name is Joseph. Welcome to my GitHub page!
+    </text>
+    <text x="40" y="350" fill="#00ff00" filter="url(#glow)">
+      
+    </text>
+    <text x="40" y="400" fill="#00ff00" filter="url(#glow)">
+      Explore to see more details about me and my personal projects.
+    </text>
+    <text x="20" y="500" fill="#00ff00" filter="url(#glow)">
+      joseph@uic josephkudia1024 % 
+    </text>
+  </g>
+  
+  <g id="typing-text" opacity="1">
+    <rect x="725" y="470" width="20" height="40" fill="#00ff00" filter="url(#glow)"/>
+    <animate 
+          attributeName="opacity" 
+          values="0;1;0" 
+          keyTimes="0;0.5;1"
+          calcMode="discrete"
+          dur="1.0s" 
+          repeatCount="indefinite"
+      />
+  </g>
+    
+  <g id="scanline-overlay" opacity="0.25">
+    <rect x="0" y="0" width="100%" height="100%" rx="25" ry="25" fill="url(#scanlines)" filter="url(#soften)"/>
+    <animate attributeName="opacity"
+             values="0.2;0.3;0.2"
+             dur="0.05s"
+             repeatCount="indefinite"/>
+  </g>
+  <rect x="0" y="0" width="100%" height="100%" rx="25" ry="25" fill="url(#vignette)"/>
+</svg>
+
+<defs>
+  <filter id="soften">
+    <feGaussianBlur stdDeviation="0.2"/>
+  </filter>
+</defs>
