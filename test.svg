@@ -92,18 +92,16 @@
   <!-- Content -->
   <g class="wrap">
     <!-- Line 1: prompt -->
-    <text class="prompt glow line" style="--line-index: 0;">
-      <tspan x="0">keith@uiuc</tspan>
-      <tspan dx="10">:</tspan>
-      <tspan dx="10">~/projects/nerf-turret</tspan>
-      <tspan dx="10" fill="#7aa2f7">$</tspan>
+    <text class="prompt glow line" style="--line-index:0;">
+      keith@uiuc:~/projects/nerf-turret$
     </text>
-
+  
     <!-- Line 2: typed command -->
-    <text class="cmd glow line" clip-path="url(#clip)" style="--line-index: 1;">
+    <text class="cmd glow line" style="--line-index:1;" clip-path="url(#clip)">
       git commit -m "Ship the PID update"
-      <!-- Cursor can be inside or outside -->
-      <tspan class="cursor">█</tspan>
     </text>
+  
+    <!-- Cursor -->
+    <rect class="cursor line" style="--line-index:1;" />
   </g>
 </svg>
