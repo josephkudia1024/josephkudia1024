@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="800" height="220" viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="230" viewBox="0 0 800 230" xmlns="http://www.w3.org/2000/svg">
   <style>
-    :root{
-      /* Global look/feel */
+    svg{
+      /* Look & feel */
       --fontSize: 28px;
       --lineHeight: 42px;
       --fg: #C8F7C5;
@@ -13,44 +13,43 @@
       --padY: 28px;
       --font: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 
-      /* Typing tempo: duration per character (adjust once) */
-      --perChar: .09s;
+      /* Timing */
+      --perChar: .09s; /* duration per character */
+      --pause: .6s;    /* pause between lines */
     }
 
-    .wrap { transform: translate(var(--padX), var(--padY)); }
-    text      { font: var(--fontSize) var(--font); dominant-baseline: hanging; }
-    .prompt   { fill: var(--dim); }
-    .cmd      { fill: var(--fg); }
-    .glow     { filter: url(#glow); }
+    text { font: var(--fontSize) var(--font); dominant-baseline: hanging; }
+    .prompt { fill: var(--dim); }
+    .cmd { fill: var(--fg); }
+    .glow { filter: url(#glow); }
 
-    /* Each line computes its own total typing time from --n and --perChar */
+    /* Per-line timing (computed from inline CSS variables) */
     .line { --t: calc(var(--n) * var(--perChar)); --stop: calc(var(--start) + var(--t)); }
 
-    /* The reveal rect grows in ch-steps (monospace) */
-    .reveal { height: var(--lineHeight); width: 0ch; }
-    .typing {
+    /* Inside each nested <svg>, the clip rect grows from 0% to 100% of that line's viewport */
+    .reveal {
+      height: 100%;
+      width: 0%;
       animation: typing var(--t) steps(var(--n)) var(--start) forwards;
     }
-    @keyframes typing { from { width: 0ch; } to { width: calc(var(--n) * 1ch); } }
+    @keyframes typing { from { width: 0%; } to { width: 100%; } }
 
-    /* Cursor follows the typing and then disappears */
+    /* Cursor rides the typing width then hides */
     .cursor {
       width: 1ch;
       height: calc(var(--fontSize) + 6px);
-      y: 2px;
-      fill: var(--cursor);
-      opacity: 1;
+      y: 2px; fill: var(--cursor); opacity: 1;
       animation:
-        move var(--t) steps(var(--n)) var(--start) forwards,
+        caret var(--t) steps(var(--n)) var(--start) forwards,
         hide 1ms linear var(--stop) forwards;
     }
-    @keyframes move { from { transform: translateX(0); } to { transform: translateX(calc(var(--n) * 1ch)); } }
+    @keyframes caret { from { transform: translateX(0); } to { transform: translateX(100%); } }
     @keyframes hide { to { opacity: 0; } }
   </style>
 
-  <!-- Background terminal window -->
+  <!-- Terminal background -->
   <rect x="0" y="0" width="100%" height="100%" rx="18" ry="18" fill="var(--bg)"/>
-  <!-- Title bar dots -->
+  <!-- macOS dots -->
   <g transform="translate(16,16)">
     <circle r="6" cx="0"  cy="0" fill="#ff5f56"/>
     <circle r="6" cx="20" cy="0" fill="#ffbd2e"/>
@@ -61,50 +60,57 @@
   <defs>
     <filter id="glow">
       <feGaussianBlur stdDeviation="1.2" result="b"/>
-      <feMerge>
-        <feMergeNode in="b"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-
-    <!-- Reusable clipPath symbol (instanced per line) -->
-    <symbol id="clipRect">
-      <rect class="reveal typing" x="0" y="0" rx="0" ry="0"/>
-    </symbol>
   </defs>
 
-  <g class="wrap">
-    <!-- Static prompt (Line 0) -->
-    <text class="prompt glow" y="0">
-      <tspan x="0">keith@uiuc</tspan>
-      <tspan dx="10">:</tspan>
-      <tspan dx="10">~/projects/nerf-turret</tspan>
-      <tspan dx="10" fill="#7aa2f7">$</tspan>
-    </text>
+  <!-- Static prompt -->
+  <text class="prompt glow" x="40" y="28">
+    <tspan x="40">keith@uiuc</tspan>
+    <tspan dx="10">:</tspan>
+    <tspan dx="10">~/projects/nerf-turret</tspan>
+    <tspan dx="10" fill="#7aa2f7">$</tspan>
+  </text>
 
-    <!-- LINE 1 -->
-    <g class="line" style="--n: 29; --start: 0s;" transform="translate(0, var(--lineHeight))">
-      <!-- unique clipPath per line to avoid affecting others -->
-      <clipPath id="clip1"><use href="#clipRect" class="typing"/></clipPath>
-      <text class="cmd glow" clip-path="url(#clip1)">git status && git add .</text>
-      <rect class="cursor"/>
-    </g>
+  <!-- ===== LINE 1 ===== -->
+  <!-- Nested viewport ensures clip/cursor are local to this row -->
+  <g class="line" style="--n: 29; --start: 0s;">
+    <svg x="40" y="70" width="720" height="42" viewBox="0 0 720 42">
+      <defs>
+        <clipPath id="clip1">
+          <rect class="reveal" x="0" y="0" height="42"/>
+        </clipPath>
+      </defs>
+      <text class="cmd glow" x="0" y="0" clip-path="url(#clip1)">git status && git add .</text>
+      <!-- The cursor uses 100% as the typed width of this nested viewport -->
+      <rect class="cursor" x="0" y="0"/>
+    </svg>
+  </g>
 
-    <!-- LINE 2 (starts after line 1 finishes + 0.6s pause) -->
-    <!-- start = prev --start + prev --n * --perChar + 0.6s -->
-    <g class="line" style="--n: 32; --start: calc(0s + 29 * var(--perChar) + .6s);" transform="translate(0, calc(var(--lineHeight) * 2))">
-      <clipPath id="clip2"><use href="#clipRect" class="typing"/></clipPath>
-      <text class="cmd glow" clip-path="url(#clip2)">git commit -m "PID update"</text>
-      <rect class="cursor"/>
-    </g>
+  <!-- ===== LINE 2 ===== -->
+  <!-- start = prev n * perChar + pause -->
+  <g class="line" style="--n: 32; --start: calc(29 * var(--perChar) + var(--pause));">
+    <svg x="40" y="112" width="720" height="42" viewBox="0 0 720 42">
+      <defs>
+        <clipPath id="clip2">
+          <rect class="reveal" x="0" y="0" height="42"/>
+        </clipPath>
+      </defs>
+      <text class="cmd glow" x="0" y="0" clip-path="url(#clip2)">git commit -m "PID update"</text>
+      <rect class="cursor" x="0" y="0"/>
+    </svg>
+  </g>
 
-    <!-- LINE 3 -->
-    <g class="line" style="--n: 24; --start: calc(0s + 29 * var(--perChar) + .6s + 32 * var(--perChar) + .6s);" transform="translate(0, calc(var(--lineHeight) * 3))">
-      <clipPath id="clip3"><use href="#clipRect" class="typing"/></clipPath>
-      <text class="cmd glow" clip-path="url(#clip3)">git push origin main</text>
-      <rect class="cursor"/>
-    </g>
-
-    <!-- Add more lines by duplicating a .line group, updating --n, --start, and the text -->
+  <!-- ===== LINE 3 ===== -->
+  <g class="line" style="--n: 24; --start: calc((29 + 32) * var(--perChar) + 2 * var(--pause));">
+    <svg x="40" y="154" width="720" height="42" viewBox="0 0 720 42">
+      <defs>
+        <clipPath id="clip3">
+          <rect class="reveal" x="0" y="0" height="42"/>
+        </clipPath>
+      </defs>
+      <text class="cmd glow" x="0" y="0" clip-path="url(#clip3)">git push origin main</text>
+      <rect class="cursor" x="0" y="0"/>
+    </svg>
   </g>
 </svg>
