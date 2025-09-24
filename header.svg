@@ -1,98 +1,99 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="800" height="180" viewBox="0 0 800 180" xmlns="http://www.w3.org/2000/svg">
+<svg width="1920" height="1080" viewBox="0 0 1920 1080">
   <style>
-    :root{
-      /* EDIT ME */
-      --n: 34;                    /* number of typed characters */
-      --duration: 4s;             /* typing duration */
-      --pause: 1.2s;              /* pause after typing */
-      --fontSize: 28px;           /* text size */
-      --fg: #C8F7C5;              /* main text (green) */
-      --dim: #7FD37A;             /* prompt color */
-      --bg: #0B0F10;              /* terminal background */
-      --cursor: #A0FFA0;          /* cursor color */
-      --radius: 14px;
-      --padX: 40px;
-      --padY: 28px;
-      --lineHeight: 42px;
-      --font: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    text {
+      font-family: "Courier New", sans-serif;
+      font-size: 40px;
+      font-weight: bold;
     }
-
-    /* Layout helpers */
-    .wrap { transform: translate(var(--padX), var(--padY)); }
-    text      { font: var(--fontSize) var(--font); dominant-baseline: hanging; }
-    .prompt   { fill: var(--dim); }
-    .cmd      { fill: var(--fg); }
-
-    /* Typing effect: reveal text by animating the clipping rect width in character steps */
-    .reveal { width: 0ch; height: var(--lineHeight); }
-    .typing {
-      animation:
-        typing var(--duration) steps(var(--n)) 0s forwards,
-        hold   var(--pause)    steps(1, end)  var(--duration) forwards;
-    }
-    @keyframes typing { from { width: 0ch; } to { width: calc(var(--n) * 1ch); } }
-    @keyframes hold   { from { width: calc(var(--n) * 1ch); } to { width: calc(var(--n) * 1ch); } }
-
-    /* Blinking block cursor that tracks the typing width */
-    .cursor {
-      width: 1ch; height: calc(var(--fontSize) + 6px);
-      x: 0; y: 2px; fill: var(--cursor);
-      animation:
-        move var(--duration) steps(var(--n)) 0s forwards,
-        blink .9s steps(1,end) infinite alternate;
-      animation-delay: 0s, calc(var(--duration) + var(--pause));
-    }
-    @keyframes move { from { transform: translateX(0); } to { transform: translateX(calc(var(--n) * 1ch)); } }
-    @keyframes blink { from { opacity: 1; } to { opacity: 0; } }
-
-    /* Optional subtle glow */
-    .glow { filter: url(#glow); }
   </style>
-
-  <!-- Background terminal window -->
-  <rect x="0" y="0" width="100%" height="100%" rx="18" ry="18" fill="var(--bg)"/>
-  <!-- Title bar dots -->
-  <g transform="translate(16,16)">
-    <circle r="6" cx="0"  cy="0" fill="#ff5f56"/>
-    <circle r="6" cx="20" cy="0" fill="#ffbd2e"/>
-    <circle r="6" cx="40" cy="0" fill="#27c93f"/>
-  </g>
-
-  <!-- Glow filter -->
+  
   <defs>
+    
+    <pattern id="scanlines" patternUnits="userSpaceOnUse" width="100%" height="10">
+      <!-- dark line -->
+      <rect x="0" y="0" width="100%" height="5" fill="black" />
+      <!-- optional subtle tint line just under (comment out if not wanted) -->
+      <rect x="0" y="1" width="100%" height="1" fill="black" opacity="0.25"/>
+      <!-- 1px gap starts at y=1.5 → next pattern row starts at y=3 -->
+    </pattern>
+
     <filter id="glow">
-      <feGaussianBlur stdDeviation="1.2" result="b"/>
+      <feGaussianBlur stdDeviation="5" result="b"/>
       <feMerge>
         <feMergeNode in="b"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
+      <feGaussianBlur stdDeviation="1"/>
     </filter>
 
-    <!-- ClipPath whose rect width we animate to "reveal" the typed text -->
-    <clipPath id="clip">
-      <rect class="reveal typing" x="0" y="0" rx="0" ry="0"/>
-    </clipPath>
+    <filter id="soften">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+      
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="50%" stop-color="black" stop-opacity="0"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.25"/>
+    </radialGradient>
+    
   </defs>
 
-  <!-- Content -->
-  <g class="wrap">
-    <!-- Line 1: prompt -->
-    <text class="prompt glow" y="0">
-      <tspan x="0">keith@uiuc</tspan>
-      <tspan dx="10">:</tspan>
-      <tspan dx="10">~/projects/nerf-turret</tspan>
-      <tspan dx="10" fill="#7aa2f7">$</tspan>
-    </text>
-
-    <!-- Line 2: the typed command (EDIT the text content) -->
-    <g transform="translate(0, 42)">
-      <!-- The typed text sits under a clipping rectangle that grows in ch-steps -->
-      <text class="cmd glow" clip-path="url(#clip)">
-        git commit -m "Ship the PID update"
-      </text>
-      <!-- The cursor that follows the typing -->
-      <rect class="cursor" />
-    </g>
+  <g id="terminal">
+    <rect x="0" y="0" width="100%" height="100%" rx="25" ry="25" fill="#202020"/>
+    <rect x="0" y="0" width="100%" height="85" rx="25" ry="25" fill="#ededed"/>
+    <rect x="0" y="60" width="100%" height="30" rx="0" ry="0" fill="#202020"/>
+    <circle r="15" cx="40" cy="30" fill="#f75455"/>
+    <circle r="15" cx="90" cy="30" fill="#f9bb4a"/>
+    <circle r="15" cx="140" cy="30" fill="#39c950"/>
   </g>
+
+  <g id="content-text">
+    <text x="20" y="100" fill="#00ff00" filter="url(#glow)">
+      joseph@uic ~ % cd /josephkudia1024/
+    </text>
+    <text x="20" y="150" fill="#00ff00" filter="url(#glow)">
+      joseph@uic josephkudia1024 % touch README.md
+    </text>
+    <text x="20" y="200" fill="#00ff00" filter="url(#glow)">
+      joseph@uic josephkudia1024 % cat README.md
+    </text>
+    <text x="40" y="300" fill="#00ff00" filter="url(#glow)">
+      Hi! My name is Joseph. Welcome to my GitHub page!
+    </text>
+    <text x="40" y="350" fill="#00ff00" filter="url(#glow)">
+      
+    </text>
+    <text x="40" y="400" fill="#00ff00" filter="url(#glow)">
+      Explore to see more details about me and my personal projects.
+    </text>
+    <text x="20" y="500" fill="#00ff00" filter="url(#glow)">
+      joseph@uic josephkudia1024 % 
+    </text>
+  </g>
+  
+  <g id="typing-text" opacity="1">
+    <rect x="725" y="470" width="20" height="40" fill="#00ff00" filter="url(#glow)"/>
+    <animate 
+          attributeName="opacity" 
+          values="0;1;0" 
+          keyTimes="0;0.5;1"
+          calcMode="discrete"
+          dur="1.0s" 
+          repeatCount="indefinite"
+      />
+  </g>
+    
+  <g id="scanline-overlay" opacity="0.25">
+    <rect x="0" y="0" width="100%" height="100%" rx="25" ry="25" fill="url(#scanlines)" filter="url(#soften)"/>
+    <animate attributeName="opacity"
+             values="0.2;0.3;0.2"
+             dur="0.05s"
+             repeatCount="indefinite"/>
+  </g>
+  <rect x="0" y="0" width="100%" height="100%" rx="25" ry="25" fill="url(#vignette)"/>
 </svg>
+
+<defs>
+  <filter id="soften">
+    <feGaussianBlur stdDeviation="0.2"/>
+  </filter>
+</defs>
