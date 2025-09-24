@@ -1,1 +1,1 @@
-![Project Logo](header.svg)
+<img src="header.svg" width="1080"/>
