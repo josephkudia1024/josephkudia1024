@@ -1,68 +1,99 @@
-<!-- https://codepen.io/thiagoteles/pen/ogoxLw -->
-<svg fill="none" viewBox="0 0 800 400" width="800" height="400" xmlns="http://www.w3.org/2000/svg">
-	<foreignObject width="100%" height="100%">
-		<div xmlns="http://www.w3.org/1999/xhtml">
-			<style>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    :root{
+      --fontSize: 28px;
+      --fg: #C8F7C5;  --dim: #7FD37A;  --bg: #0B0F10;  --cursor: #A0FFA0;
+      --padX: 40px; --padY: 28px; --lineHeight: 42px;
+      --font: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      /* timings */
+      --t1: 4s;   /* line 1 typing duration */
+      --p1: 0.9s; /* line 1 pause after typing */
+      --t2: 4s;   /* line 2 typing duration */
+      --p2: 1s;   /* line 2 pause after typing */
+    }
 
-                .container {
-                font-family:
-						system-ui,
-						-apple-system,
-						'Segoe UI',
-						Roboto,
-						Helvetica,
-						Arial,
-						sans-serif,
-						'Apple Color Emoji',
-						'Segoe UI Emoji';
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                margin: 0;
-                width: 100%;
-                height: 400px;
-                background-color: rgb(25,25,25);  
-                background-size: 600% 400%;
-                border-radius: 10px;
-                color: rgba(255,255,255,.75);
-                text-align: center;
-                }
+    .wrap { transform: translate(var(--padX), var(--padY)); }
+    text { font: var(--fontSize) var(--font); dominant-baseline: hanging; }
+    .prompt { fill: var(--dim); }
+    .cmd    { fill: var(--fg); }
 
-                .type-writer{
-                    display: inline-block;
-                }
+    /* generic reveal rect; width animated per line via classes */
+    .reveal { width: 0ch; height: var(--lineHeight); }
 
-                .line-1{
-                    width: 100%;
-                    margin: 0 auto;
-                    border-right: 2px solid rgba(255,255,255,.75);
-                    font-size: 180%;
-                    text-align: center;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    transform: translateY(-50%);    
-                }
+    /* per-line typing (width) and cursor (x) animations */
+    @keyframes typing   { from { width: 0ch; } to { width: var(--w); } }
+    @keyframes move     { from { transform: translateX(0); } to { transform: translateX(var(--w)); } }
+    @keyframes blink    { from { opacity: 1; } to { opacity: 0; } }
 
-                /* Animation */
-                .anim-typewriter{
-                animation: typewriter 4s steps(44) 1s 1 normal both,
-                            blinkTextCursor 500ms steps(44) infinite normal;
-                }
-                @keyframes typewriter{
-                from{width: 0;}
-                to{width: 100%;}
-                }
-                @keyframes blinkTextCursor{
-                from{border-right-color: rgba(255,255,255,.75);}
-                to{border-right-color: transparent;}
-                }
-			</style>
-			<div class="container">
-                <div class="type-writer">
-                    <p class="line-1 anim-typewriter">Joseph Kudia</p>
-                </div>
-            </div>
-        </div>
-	</foreignObject>
+    /* cursor box */
+    .cursor {
+      width: 1ch; height: calc(var(--fontSize) + 6px); y: 2px; fill: var(--cursor);
+      animation: blink .9s steps(1,end) infinite alternate;
+    }
+
+    /* subtle glow */
+    .glow { filter: url(#glow); }
+  </style>
+
+  <!-- background -->
+  <rect width="100%" height="100%" rx="18" ry="18" fill="var(--bg)"/>
+  <!-- window dots -->
+  <g transform="translate(16,16)">
+    <circle r="6" cx="0"  fill="#ff5f56"/>
+    <circle r="6" cx="20" fill="#ffbd2e"/>
+    <circle r="6" cx="40" fill="#27c93f"/>
+  </g>
+
+  <defs>
+    <filter id="glow"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+
+    <!-- UNIQUE clipPaths per line -->
+    <clipPath id="clip-1">
+      <!-- set --w to the char width for line 1 via style -->
+      <rect class="reveal" style="--w: calc(var(--n1) * 1ch);
+        animation: typing var(--t1) steps(var(--n1)) 0s forwards;" />
+    </clipPath>
+
+    <clipPath id="clip-2">
+      <rect class="reveal" style="--w: calc(var(--n2) * 1ch);
+        animation: typing var(--t2) steps(var(--n2)) calc(var(--t1) + var(--p1)) forwards;" />
+    </clipPath>
+  </defs>
+
+  <g class="wrap">
+    <!-- Static prompt line -->
+    <text class="prompt glow" y="0">
+      <tspan x="0">keith@uiuc</tspan><tspan dx="10">:</tspan>
+      <tspan dx="10">~/projects/nerf-turret</tspan><tspan dx="10" fill="#7aa2f7">$</tspan>
+    </text>
+
+    <!-- LINE 1 -->
+    <g transform="translate(0, var(--lineHeight))" style="--n1: 34;">
+      <text class="cmd glow" clip-path="url(#clip-1)">git commit -m "Ship the PID update"</text>
+      <!-- cursor follows line 1 typing, then keeps blinking at end until line 2 starts -->
+      <rect class="cursor"
+            style="--w: calc(var(--n1) * 1ch);
+                   animation: move var(--t1) steps(var(--n1)) 0s forwards, blink .9s steps(1,end) infinite alternate;
+                   animation-delay: 0s, calc(var(--t1));"
+            />
+    </g>
+
+    <!-- New prompt for LINE 2 (appears immediately; the text itself is clipped/typed) -->
+    <g transform="translate(0, calc(var(--lineHeight) * 2))">
+      <text class="prompt glow" y="0">
+        <tspan x="0">keith@uiuc</tspan><tspan dx="10">:</tspan>
+        <tspan dx="10">~/projects/nerf-turret</tspan><tspan dx="10" fill="#7aa2f7">$</tspan>
+      </text>
+    </g>
+
+    <!-- LINE 2 -->
+    <g transform="translate(0, calc(var(--lineHeight) * 3))" style="--n2: 26;">
+      <text class="cmd glow" clip-path="url(#clip-2)">make && ./build/app</text>
+      <rect class="cursor"
+            style="--w: calc(var(--n2) * 1ch);
+                   animation: move var(--t2) steps(var(--n2)) calc(var(--t1) + var(--p1)) forwards, blink .9s steps(1,end) infinite alternate;
+                   animation-delay: calc(var(--t1) + var(--p1)), calc(var(--t1) + var(--p1) + var(--t2));" />
+    </g>
+  </g>
 </svg>
