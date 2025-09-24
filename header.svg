@@ -86,7 +86,7 @@
     </text>
 
     <!-- Line 2: the typed command (EDIT the text content) -->
-    <g transform="translate(0, 42)">
+    <g transform="translate(0, --lineHeight)">
       <!-- The typed text sits under a clipping rectangle that grows in ch-steps -->
       <text class="cmd glow" clip-path="url(#clip)">
         git commit -m "Ship the PID update"
