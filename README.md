@@ -1,3 +1,2 @@
-<p align="center">
-  ![Header](header.svg)
-</p>
+![Header](header.svg)
+
