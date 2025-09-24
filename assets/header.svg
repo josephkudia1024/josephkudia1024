@@ -57,31 +57,34 @@
   </g>
 
   <g id="content-text">
-    <text x="20" y="100" fill="#00ff00" filter="url(#glow)">
+    <text x="20" y="100" fill="#80ff80" filter="url(#glow)">
       joseph@uic ~ % cd /josephkudia1024/
     </text>
-    <text x="20" y="150" fill="#00ff00" filter="url(#glow)">
+    <text x="20" y="150" fill="#80ff80" filter="url(#glow)">
       joseph@uic josephkudia1024 % touch README.md
     </text>
-    <text x="20" y="200" fill="#00ff00" filter="url(#glow)">
+    <text x="20" y="200" fill="#80ff80" filter="url(#glow)">
       joseph@uic josephkudia1024 % cat README.md
     </text>
-    <text x="40" y="300" fill="#00ff00" filter="url(#glow)">
+    <text x="40" y="300" fill="#80ff80" filter="url(#glow)">
       Hi! My name is Joseph. Welcome to my GitHub page!
     </text>
-    <text x="40" y="350" fill="#00ff00" filter="url(#glow)">
-      
+      <text x="40" y="350" fill="#80ff80" filter="url(#glow)">
+      I am a Computer Engineering student at UIC, passionate about electronics,
     </text>
-    <text x="40" y="400" fill="#00ff00" filter="url(#glow)">
+    <text x="40" y="400" fill="#80ff80" filter="url(#glow)">
+      hardware, programming, and embedded systems.
+    </text>
+    <text x="40" y="500" fill="#80ff80" filter="url(#glow)">
       Explore to see more details about me and my personal projects.
     </text>
-    <text x="20" y="500" fill="#00ff00" filter="url(#glow)">
+    <text x="20" y="600" fill="#80ff80" filter="url(#glow)">
       joseph@uic josephkudia1024 % 
     </text>
   </g>
   
   <g id="typing-text" opacity="1">
-    <rect x="725" y="465" width="20" height="40" fill="#00ff00" filter="url(#glow)"/>
+    <rect x="725" y="565" width="20" height="40" fill="#80ff80" filter="url(#glow)"/>
     <animate 
           attributeName="opacity" 
           values="0;1;0" 
