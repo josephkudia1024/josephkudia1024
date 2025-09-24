@@ -4,4 +4,4 @@
 <p align="center">
   <img src="https://skillicons.dev/icons?i=arduino, c,clion,cpp,eclipse,gradle,idea,py,pycharm,vscode" />
 </p>
-[![My Skills](https://skillicons.dev/icons?i=arduino, c,clion,cpp,eclipse,gradle,idea,py,pycharm,vscode)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=arduino,c,clion,cpp,eclipse,gradle,idea,py,pycharm,vscode)](https://skillicons.dev)
