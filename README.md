@@ -1,4 +1,4 @@
-<img src="https://github.com/josephkudia1024/josephkudia1024/blob/d595a87859e170d1e8506ef58b7422d464ccae35/assets/header.svg">
+<img src="https://github.com/josephkudia1024/josephkudia1024/blob/00d684f2f106caef57745800b7cf064413e4b45a/assets/header.svg">
 
 ## Tech Stack
 <p align="center">
