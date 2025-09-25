@@ -2,9 +2,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
   <style>
     text {
-      font-family: "Courier New", sans-serif;
+      font-family: "cascadia mono", ui-monospace;
       font-size: 40px;
-      font-weight: bold;
     }
   </style>
   
@@ -63,17 +62,17 @@
     <text x="20" y="200" fill="#80ff80" filter="url(#glow)">
       joseph@uic josephkudia1024 % cat README.md
     </text>
-    <text x="40" y="300" fill="#80ff80" filter="url(#glow)">
+    <text x="60" y="300" fill="#80ff80" filter="url(#glow)">
       Hi! My name is Joseph. Welcome to my GitHub page!
     </text>
-      <text x="40" y="350" fill="#80ff80" filter="url(#glow)">
+      <text x="60" y="350" fill="#80ff80" filter="url(#glow)">
       I am a Computer Engineering student at UIC, passionate about electronics,
     </text>
-    <text x="40" y="400" fill="#80ff80" filter="url(#glow)">
+    <text x="60" y="400" fill="#80ff80" filter="url(#glow)">
       hardware, programming, and embedded systems.
     </text>
-    <text x="40" y="500" fill="#80ff80" filter="url(#glow)">
-      Explore to see more details about me and my personal projects.
+    <text x="60" y="500" fill="#80ff80" filter="url(#glow)">
+      > Explore to see more details about me and my personal projects.
     </text>
     <text x="20" y="600" fill="#80ff80" filter="url(#glow)">
       joseph@uic josephkudia1024 % 
